@@ -5,7 +5,7 @@ import { RoundedButton } from "../../components/RounderButton";
 import { Colors } from "../../utils/colors";
 import { fontSizes, spacing } from "../../utils/sizes";
 export const Focus = ({ addSubject }) => {
-  const [tempItem, setTempItem] = useState(null);
+  const [subject, setSubject] = useState(null);
   return (
     <View style={styles.container}>
       <View style={styles.tituloContainer}>
@@ -13,18 +13,17 @@ export const Focus = ({ addSubject }) => {
 
         <View style={styles.inputContainer}>
           <TextInput
-            style={{ flex: 1, marginRight: 20 }}
-            onChange={
-              ({ nativeEvent }) =>{
-                setTempItem(nativeEvent.text) 
-                console.log(nativeEvent.text)
-              }
-            }
+            style={{ flex: 1, marginRight: spacing.md }}
+            onChange={({ nativeEvent }) => {
+              setSubject(nativeEvent.text);
+            }}
           />
           <RoundedButton
             size={50}
             title="+"
-            onPress ={()=> {addSubject(tempItem)}}
+            onPress={() => {
+              addSubject(subject);
+            }}
           />
         </View>
       </View>
@@ -38,7 +37,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   tituloContainer: {
-    flex: 0.5,
+    flex: 1,
     padding: spacing.md,
     justifyContent: "center",
   },
