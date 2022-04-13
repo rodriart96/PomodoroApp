@@ -1,32 +1,29 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Platform, Vibration } from "react-native";
 import { ProgressBar } from "react-native-paper";
-
 import { Colors } from "../../utils/colors";
 import { fontSizes, spacing } from "../../utils/sizes";
 import { CountDown } from "../../components/CountDown";
 import { RoundedButton } from "../../components/RounderButton";
 import { Timing } from "./Timing";
-
 import { useKeepAwake } from "expo-keep-awake";
 
-const DEFAULT_TIME = 1;
+const DEFAULT_TIME = .1;
 
 export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
   useKeepAwake();
-  const [minutes, setMinutes] = useState(0.1);
+  const [minutes, setMinutes] = useState(DEFAULT_TIME);
   const [isStarted, setIsStarted] = useState(false);
   const [progress, setProgress] = useState(1);
 
-  const onProgress = (progress) => {
-    setProgress(progress);
-  };
+  const onProgress = () => setProgress(progress);;
+
   const vibrate = () => {
     if (Platform.OS === "ios") {
-      const intervalo = setInterval(() => Vibration.vibrate(), 250);
-      setTimeout(() => clearInterval(intervalo), 10000);
+      const intervalo = setInterval(() => Vibration.vibrate(), 1000);
+      setTimeout(() => clearInterval(intervalo), 7000);
     } else {
-      Vibration.vibrate(10000);
+      Vibration.vibrate(7000);
     }
   };
 
@@ -37,8 +34,8 @@ export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
     setIsStarted(false);
     onTimerEnd();
   };
-  const changeTime = (min) => {
-    setMinutes(min);
+  const changeTime = minutes => {
+    setMinutes(minutes);
     setProgress(1);
     setIsStarted(false);
   };
@@ -55,8 +52,8 @@ export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
       </View>
 
       <View style={{ paddingTop: spacing.md }}>
-        <Text style={styles.titulo}>Focusing on:</Text>
-        <Text style={styles.tarea}>Timer goes here: {focusSubject}</Text>
+        <Text style={styles.titulo}>Trabajando en:</Text>
+        <Text style={styles.tarea}>{focusSubject}</Text>
       </View>
       <View style={{ paddingTop: spacing.xl }}>
         <ProgressBar
@@ -86,13 +83,8 @@ export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
         )}
       </View>
       <View style={styles.clearSubject}>
-      <RoundedButton
-            size={50}
-            title="-"
-            onPress={() => {
-              clearSubject();
-            }}
-          />
+        <RoundedButton size={50} title="-" onPress={() => clearSubject()}
+        />
       </View>
     </View>
   );
@@ -126,8 +118,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  clearSubject:{
+  clearSubject: {
     paddingBottom: spacing.lg,
-    paddingLeft: spacing.lg
-  }
+    paddingLeft: spacing.lg,
+  },
 });
